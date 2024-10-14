@@ -1,11 +1,25 @@
 'use strict';
 
 const table = document.querySelector('table');
-const rows = table.rows;
 
-for (let i = 0; i < rows.length; i++) {
-  const secondCell = rows[i].cells[1];
-  const clonedCell = secondCell.cloneNode(true);
+// Перевіряємо, чи існує таблиця
+if (table) {
+  const rows = Array.from(table.rows);
 
-  rows[i].insertBefore(clonedCell, rows[i].cells[rows[i].cells.length - 1]);
+  // Створюємо DocumentFragment для уникнення переробок DOM
+  const fragment = document.createDocumentFragment();
+
+  rows.forEach((row) => {
+    const secondCell = row.cells[1]; // Отримуємо другу клітинку
+
+    if (secondCell) {
+      const clonedCell = secondCell.cloneNode(true); // Клонуємо другу клітинку
+
+      // Вставляємо клон перед останньою клітинкою
+      row.insertBefore(clonedCell, row.cells[row.cells.length - 1]);
+    }
+  });
+
+  // Додаємо змінений фрагмент до таблиці
+  table.appendChild(fragment);
 }
